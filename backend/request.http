@@ -1,0 +1,129 @@
+@baseUrl = http://localhost:3001
+
+@jwtToken = {{authLogin.response.body.accessToken}}
+
+@taskId = {{createTask.response.body.id}}
+@taskSlug = {{createTask.response.body.slug}}
+
+@userNameForTesting = enzo12
+@userEmailForTesring = enzo@email.com
+@userPasswordForTesing = 123
+@userNewPasswordForTesting = 123456
+
+### Auth login
+# @name authLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "name": "enzo",
+  "password": "123456"
+}
+
+# {
+#   "name": "{{userNameForTesting}}",
+#   "password": "{{userPasswordForTesing}}"
+# }
+
+### Read one user
+# @name readOneUser
+GET {{baseUrl}}/user/123  
+Authorization: Bearer {{jwtToken}}
+
+### Create user
+# @name createUser
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "name": "{{userNameForTesting}}",
+  "password": "{{userPasswordForTesing}}"
+}
+
+
+### Update user
+# @name updateUser
+PATCH  {{baseUrl}}/user/me
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+
+{
+  "name": "{{userNameForTesting}}",
+}
+
+### Update user password
+# @name updateUserPassword
+PATCH  {{baseUrl}}/user/me/password
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+
+{
+  "currentPassword":"{{userPasswordForTesing}}",
+  "newPassword": "{{userNewPasswordForTesting}}1"
+}
+
+### Read one user
+# @name readOneUser
+GET  {{baseUrl}}/user/me
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+### Delete one user
+# @name deleteOneUser
+DELETE {{baseUrl}}/user/me
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+# TASK
+#######################################
+
+### Create task
+# @name createTask
+POST {{baseUrl}}/task/me
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+  "title": "DELETE - título",
+  "content":"DELETE - content1000",
+  "priority":"Eventual"
+}
+
+### Read all tasks
+# @name readAllTasks
+GET {{baseUrl}}/task/me
+Authorization: Bearer {{jwtToken}}
+
+### Find all tasks done
+# @name findAllTasksDone
+GET {{baseUrl}}/task/me/done
+Authorization:  Bearer {{jwtToken}}
+
+### Find all tasks pending
+# @name findAllTasksPending
+GET {{baseUrl}}/task/me/pending
+Authorization:  Bearer {{jwtToken}}
+
+### ToogleDone
+# @name toogleDone
+PATCH {{baseUrl}}/task/me/{{taskId}}/done
+Authorization: Bearer {{jwtToken}}
+
+### Update task
+# @name updateTask
+PATCH {{baseUrl}}/task/me/{{taskId}}
+Content-Type: application/json
+Authorization: Bearer {{jwtToken}}
+
+{
+
+  "done": true
+}
+
+### Delete task
+# @name deleteTask
+DELETE {{baseUrl}}/task/me/{{taskId}}
+Authorization: Bearer {{jwtToken}}
